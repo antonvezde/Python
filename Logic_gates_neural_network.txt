@@ -1,0 +1,65 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def sigmoid(x):
+	return 1/(1 + np.exp(-x))
+def sigmoid_p(x):
+	return sigmoid(x)*(1-sigmoid(x))
+
+# data = np.array([[0,0,0],
+# 				 [0,1,0],
+# 				 [1,0,0],
+# 				 [1,1,1]]) # Logical AND
+
+data = np.array([[0,0,0],
+				 [0,1,1],
+				 [1,0,1],
+				 [1,1,1]]) # Logical OR
+
+iterations = 1000
+w1 = np.random.rand()
+w2 = np.random.rand()
+b = np.random.rand()
+learning_rate = 0.1
+costs = []
+
+for i in range(iterations):
+	point = data[np.random.randint(len(data))]
+	z = point[0] * w1 + point[1] * w2 + b
+
+	pred = sigmoid(z)
+	target = point[2]
+
+	cost = np.square(pred - target)
+
+	if i % 10 == 0:
+		c = 0
+		for j in range(len(data)):
+			p = data[j]
+			p_pred = sigmoid(w1*p[0] + w2*p[1] + b)
+			c += np.square(p_pred - p[2])
+		costs.append(c)
+
+	dcost_dpred = 2 * (pred - target)
+	dpred_dz = sigmoid_p(z)
+
+	w1 = w1 - learning_rate * dcost_dpred * dpred_dz * point[0]
+	w2 = w2 - learning_rate * dcost_dpred * dpred_dz * point[1]
+	b = b - learning_rate * dcost_dpred * dpred_dz
+
+plt.plot(costs)
+plt.xlabel('Costs')
+plt.show()
+
+print('Derived weights:\n')
+print('w1={0}\nw2={1}\nb={2}\n'.format(w1,w2,b))
+print('Input two logical operators\n')
+x1 = float(input('First logical operator: \n'))
+x2 = float(input('Second logical operator: \n'))
+pred = sigmoid(w1 * x1 + w2 * x2 + b)
+
+if pred > 0.5:
+	print('Result =', 1)
+elif pred < 0.5:
+	print('Result =', 0)
+else: print("Don't know")
