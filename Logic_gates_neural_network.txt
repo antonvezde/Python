@@ -7,14 +7,14 @@ def sigmoid_p(x):
 	return sigmoid(x)*(1-sigmoid(x))
 
 # data = np.array([[0,0,0],
-# 				 [0,1,0],
-# 				 [1,0,0],
-# 				 [1,1,1]]) # Logical AND
+# 		   [0,1,0],
+# 		   [1,0,0],
+# 		   [1,1,1]]) # Logical AND
 
 data = np.array([[0,0,0],
-				 [0,1,1],
-				 [1,0,1],
-				 [1,1,1]]) # Logical OR
+		 [0,1,1],
+		 [1,0,1],
+		 [1,1,1]]) # Logical OR
 
 iterations = 1000
 w1 = np.random.rand()
