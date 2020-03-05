@@ -1,0 +1,63 @@
+# Sudouku solver
+
+import numpy as np
+
+# Create input data as matrix
+# x_axis - columns
+# y_axis - rows
+
+data = np.array([[0, 0, 0, 5, 4, 6, 0, 0, 9],
+		 		 [0, 2, 0, 0, 0, 0, 0, 0, 7],
+		 		 [0, 0, 3, 9, 0, 0, 0, 0, 4],
+		 	 	 [9, 0, 5, 0, 0, 0, 0, 7, 0],
+		 		 [7, 0, 0, 0, 0, 0, 0, 2, 0],
+		 		 [0, 0, 0, 0, 9, 3, 0, 0, 0],
+		 		 [0, 5, 6, 0, 0, 8, 0, 0, 0],
+		 		 [0, 1, 0, 0, 3, 9, 0, 0, 0],
+		 		 [0, 0, 0, 0, 0, 0, 8, 0, 6]])
+
+def possible(row, col, value):
+
+	global data
+	# Check row
+
+	for i in range(9):
+		if data[row, i] == value:
+			return False
+
+	# Check column
+
+	for i in range(9):
+		if data[i, col] == value:
+			return False
+
+	x_axis = (col//3) * 3
+	y_axis = (row//3) * 3
+
+	# Check squares
+
+	for i in range(3):
+		for j in range(3):
+			if data[y_axis+i, x_axis+j] == value:
+				return False
+
+	# In all other cases: True
+
+	return True
+
+def solve():
+
+	global data
+
+	for i in range(9):
+		for j in range(9):
+			if data[i, j] == 0:
+				for n in range(1,10):
+					if possible(i, j, n):
+						data[i, j] = n
+						solve()
+						data[i, j] = 0
+				return
+	print(data)
+
+solve()
